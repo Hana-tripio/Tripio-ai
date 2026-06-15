@@ -1,0 +1,219 @@
+{
+  "$defs": {
+    "CandidatePlace": {
+      "properties": {
+        "place_id": {
+          "exclusiveMinimum": 0,
+          "title": "Place Id",
+          "type": "integer"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "region_id": {
+          "exclusiveMinimum": 0,
+          "title": "Region Id",
+          "type": "integer"
+        },
+        "category": {
+          "$ref": "#/$defs/PlaceCategory"
+        },
+        "estimated_cost": {
+          "minimum": 0,
+          "title": "Estimated Cost",
+          "type": "integer"
+        },
+        "average_stay_minutes": {
+          "exclusiveMinimum": 0,
+          "title": "Average Stay Minutes",
+          "type": "integer"
+        },
+        "is_core_spot": {
+          "default": false,
+          "title": "Is Core Spot",
+          "type": "boolean"
+        },
+        "is_local": {
+          "default": false,
+          "title": "Is Local",
+          "type": "boolean"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "trend_score": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Trend Score",
+          "type": "number"
+        },
+        "local_contribution_score": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Local Contribution Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "place_id",
+        "name",
+        "region_id",
+        "category",
+        "estimated_cost",
+        "average_stay_minutes"
+      ],
+      "title": "CandidatePlace",
+      "type": "object"
+    },
+    "CompanionType": {
+      "enum": [
+        "SOLO",
+        "FRIEND",
+        "COUPLE",
+        "FAMILY",
+        "GROUP"
+      ],
+      "title": "CompanionType",
+      "type": "string"
+    },
+    "DesignMode": {
+      "enum": [
+        "FULL_GENERATION",
+        "PARTIAL_REGENERATION",
+        "BUDGET_REBALANCE",
+        "PLACE_REPLACEMENT",
+        "SCHEDULE_OPTIMIZATION"
+      ],
+      "title": "DesignMode",
+      "type": "string"
+    },
+    "PlaceCategory": {
+      "enum": [
+        "LODGING",
+        "RESTAURANT",
+        "CAFE",
+        "ACTIVITY",
+        "FESTIVAL",
+        "MARKET",
+        "TRANSPORT",
+        "ETC"
+      ],
+      "title": "PlaceCategory",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "session_id": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session Id"
+    },
+    "user_id": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "User Id"
+    },
+    "mode": {
+      "$ref": "#/$defs/DesignMode",
+      "default": "FULL_GENERATION"
+    },
+    "region_id": {
+      "exclusiveMinimum": 0,
+      "title": "Region Id",
+      "type": "integer"
+    },
+    "region_name": {
+      "minLength": 1,
+      "title": "Region Name",
+      "type": "string"
+    },
+    "days": {
+      "maximum": 10,
+      "minimum": 1,
+      "title": "Days",
+      "type": "integer"
+    },
+    "budget": {
+      "minimum": 50000,
+      "title": "Budget",
+      "type": "integer"
+    },
+    "people_count": {
+      "maximum": 20,
+      "minimum": 1,
+      "title": "People Count",
+      "type": "integer"
+    },
+    "companion_type": {
+      "$ref": "#/$defs/CompanionType"
+    },
+    "style_tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Style Tags",
+      "type": "array"
+    },
+    "local_contribution_enabled": {
+      "default": true,
+      "title": "Local Contribution Enabled",
+      "type": "boolean"
+    },
+    "must_include_place_ids": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Must Include Place Ids",
+      "type": "array"
+    },
+    "candidate_places": {
+      "items": {
+        "$ref": "#/$defs/CandidatePlace"
+      },
+      "title": "Candidate Places",
+      "type": "array"
+    },
+    "personalization_enabled": {
+      "default": false,
+      "title": "Personalization Enabled",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "region_id",
+    "region_name",
+    "days",
+    "budget",
+    "people_count",
+    "companion_type"
+  ],
+  "title": "TravelDesignRequest",
+  "type": "object"
+}

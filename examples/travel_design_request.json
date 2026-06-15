@@ -1,0 +1,11 @@
+{
+  "region_id": 10,
+  "region_name": "공주",
+  "days": 2,
+  "budget": 300000,
+  "people_count": 2,
+  "companion_type": "FRIEND",
+  "style_tags": ["힐링", "역사", "로컬푸드"],
+  "local_contribution_enabled": true,
+  "personalization_enabled": false
+}

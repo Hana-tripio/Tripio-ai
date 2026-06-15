@@ -1,0 +1,363 @@
+{
+  "$defs": {
+    "BudgetPlan": {
+      "properties": {
+        "total_budget": {
+          "minimum": 0,
+          "title": "Total Budget",
+          "type": "integer"
+        },
+        "estimated_total_cost": {
+          "minimum": 0,
+          "title": "Estimated Total Cost",
+          "type": "integer"
+        },
+        "remaining_budget": {
+          "title": "Remaining Budget",
+          "type": "integer"
+        },
+        "category_budgets": {
+          "items": {
+            "$ref": "#/$defs/CategoryBudget"
+          },
+          "title": "Category Budgets",
+          "type": "array"
+        }
+      },
+      "required": [
+        "total_budget",
+        "estimated_total_cost",
+        "remaining_budget",
+        "category_budgets"
+      ],
+      "title": "BudgetPlan",
+      "type": "object"
+    },
+    "CategoryBudget": {
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/PlaceCategory"
+        },
+        "amount": {
+          "minimum": 0,
+          "title": "Amount",
+          "type": "integer"
+        },
+        "ratio": {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Ratio",
+          "type": "number"
+        }
+      },
+      "required": [
+        "category",
+        "amount",
+        "ratio"
+      ],
+      "title": "CategoryBudget",
+      "type": "object"
+    },
+    "CompanionType": {
+      "enum": [
+        "SOLO",
+        "FRIEND",
+        "COUPLE",
+        "FAMILY",
+        "GROUP"
+      ],
+      "title": "CompanionType",
+      "type": "string"
+    },
+    "ItineraryDay": {
+      "properties": {
+        "day_number": {
+          "minimum": 1,
+          "title": "Day Number",
+          "type": "integer"
+        },
+        "day_title": {
+          "minLength": 1,
+          "title": "Day Title",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/ItineraryItem"
+          },
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "day_number",
+        "day_title",
+        "items"
+      ],
+      "title": "ItineraryDay",
+      "type": "object"
+    },
+    "ItineraryItem": {
+      "properties": {
+        "place_id": {
+          "exclusiveMinimum": 0,
+          "title": "Place Id",
+          "type": "integer"
+        },
+        "place_name": {
+          "minLength": 1,
+          "title": "Place Name",
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/PlaceCategory"
+        },
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "start_time": {
+          "pattern": "^\\d{2}:\\d{2}$",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "end_time": {
+          "pattern": "^\\d{2}:\\d{2}$",
+          "title": "End Time",
+          "type": "string"
+        },
+        "estimated_cost": {
+          "minimum": 0,
+          "title": "Estimated Cost",
+          "type": "integer"
+        },
+        "is_core": {
+          "default": false,
+          "title": "Is Core",
+          "type": "boolean"
+        },
+        "is_local": {
+          "default": false,
+          "title": "Is Local",
+          "type": "boolean"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "place_id",
+        "place_name",
+        "category",
+        "sequence",
+        "start_time",
+        "end_time",
+        "estimated_cost",
+        "reason"
+      ],
+      "title": "ItineraryItem",
+      "type": "object"
+    },
+    "PlaceCategory": {
+      "enum": [
+        "LODGING",
+        "RESTAURANT",
+        "CAFE",
+        "ACTIVITY",
+        "FESTIVAL",
+        "MARKET",
+        "TRANSPORT",
+        "ETC"
+      ],
+      "title": "PlaceCategory",
+      "type": "string"
+    },
+    "PlanSummary": {
+      "properties": {
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "region_id": {
+          "exclusiveMinimum": 0,
+          "title": "Region Id",
+          "type": "integer"
+        },
+        "region_name": {
+          "minLength": 1,
+          "title": "Region Name",
+          "type": "string"
+        },
+        "duration_days": {
+          "minimum": 1,
+          "title": "Duration Days",
+          "type": "integer"
+        },
+        "people_count": {
+          "minimum": 1,
+          "title": "People Count",
+          "type": "integer"
+        },
+        "companion_type": {
+          "$ref": "#/$defs/CompanionType"
+        },
+        "style_tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Style Tags",
+          "type": "array"
+        },
+        "local_contribution_enabled": {
+          "title": "Local Contribution Enabled",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "title",
+        "summary",
+        "region_id",
+        "region_name",
+        "duration_days",
+        "people_count",
+        "companion_type",
+        "style_tags",
+        "local_contribution_enabled"
+      ],
+      "title": "PlanSummary",
+      "type": "object"
+    },
+    "PortfolioMetrics": {
+      "properties": {
+        "local_contribution_score": {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Local Contribution Score",
+          "type": "number"
+        },
+        "region_value_score": {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Region Value Score",
+          "type": "number"
+        },
+        "expected_reward": {
+          "minimum": 0,
+          "title": "Expected Reward",
+          "type": "integer"
+        },
+        "core_spot_ratio": {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Core Spot Ratio",
+          "type": "number"
+        },
+        "local_spend_ratio": {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Local Spend Ratio",
+          "type": "number"
+        },
+        "schedule_density": {
+          "enum": [
+            "RELAXED",
+            "BALANCED",
+            "DENSE"
+          ],
+          "title": "Schedule Density",
+          "type": "string"
+        },
+        "budget_stability": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH"
+          ],
+          "title": "Budget Stability",
+          "type": "string"
+        }
+      },
+      "required": [
+        "local_contribution_score",
+        "region_value_score",
+        "expected_reward",
+        "core_spot_ratio",
+        "local_spend_ratio",
+        "schedule_density",
+        "budget_stability"
+      ],
+      "title": "PortfolioMetrics",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "plan_summary": {
+      "$ref": "#/$defs/PlanSummary"
+    },
+    "itinerary_days": {
+      "items": {
+        "$ref": "#/$defs/ItineraryDay"
+      },
+      "title": "Itinerary Days",
+      "type": "array"
+    },
+    "budget_plan": {
+      "$ref": "#/$defs/BudgetPlan"
+    },
+    "portfolio_metrics": {
+      "$ref": "#/$defs/PortfolioMetrics"
+    },
+    "recommendations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Recommendations",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "editable_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Editable Actions",
+      "type": "array"
+    },
+    "personalization_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Personalization Reasons",
+      "type": "array"
+    }
+  },
+  "required": [
+    "plan_summary",
+    "itinerary_days",
+    "budget_plan",
+    "portfolio_metrics"
+  ],
+  "title": "TravelDesignResponse",
+  "type": "object"
+}
