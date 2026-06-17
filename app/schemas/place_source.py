@@ -21,6 +21,17 @@ class PlaceCategory(StrEnum):
     ETC = "ETC"
 
 
+class PlaceSyncStatus(StrEnum):
+    RAW = "RAW"
+    NORMALIZED = "NORMALIZED"
+    DUPLICATE_CANDIDATE = "DUPLICATE_CANDIDATE"
+    REVIEW_REQUIRED = "REVIEW_REQUIRED"
+    READY = "READY"
+    SYNCED = "SYNCED"
+    SYNC_FAILED = "SYNC_FAILED"
+    INACTIVE = "INACTIVE"
+
+
 class NormalizedPlace(BaseModel):
     source: ExternalPlaceSource
     source_place_id: str

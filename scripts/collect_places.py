@@ -5,16 +5,11 @@ from app.clients.kakao_local_client import KakaoLocalClient
 from app.clients.naver_local_client import NaverLocalClient
 from app.clients.tour_api_client import TourApiClient
 from app.core.config import settings
+from app.data.collection_queries import FIRST_PHASE_REGIONS, build_queries
 from app.db.place_repository import SqlAlchemyPlaceRepository
 from app.db.session import SessionLocal
 from app.services.place_collector import PlaceCollector
 from app.services.place_persistence import PlacePersistenceService
-
-DEFAULT_QUERIES_BY_REGION = {
-    "공주": ["공주 관광지", "공주 카페", "공주 맛집", "공주 시장", "공주 숙소"],
-    "대전": ["대전 관광지", "대전 카페", "대전 맛집", "대전 시장", "대전 숙소"],
-    "청주": ["청주 관광지", "청주 카페", "청주 맛집", "청주 시장", "청주 숙소"],
-}
 
 
 def main() -> None:
@@ -51,10 +46,7 @@ def main() -> None:
 
     _validate_required_settings()
 
-    queries = args.queries or DEFAULT_QUERIES_BY_REGION.get(
-        args.region,
-        [f"{args.region} 관광지", f"{args.region} 카페", f"{args.region} 맛집"],
-    )
+    queries = args.queries or _default_queries_for_region(args.region)
     tour_keywords = args.tour_keywords or [args.region]
 
     collector = PlaceCollector(
@@ -104,6 +96,12 @@ def _validate_required_settings() -> None:
         missing.append("TOUR_API_SERVICE_KEY")
     if missing:
         raise SystemExit(f"Missing required environment variables: {', '.join(missing)}")
+
+
+def _default_queries_for_region(region_name: str) -> list[str]:
+    if region_name in FIRST_PHASE_REGIONS:
+        return build_queries(region_name)
+    return [f"{region_name} 관광지", f"{region_name} 카페", f"{region_name} 맛집"]
 
 
 if __name__ == "__main__":

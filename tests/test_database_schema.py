@@ -31,3 +31,36 @@ def test_database_settings_include_postgres_url() -> None:
 
     assert "database_url" in config
     assert "postgresql+psycopg" in config
+
+
+def test_place_sync_fields_are_defined_in_models() -> None:
+    models = Path("app/db/models.py").read_text(encoding="utf-8")
+
+    for field_name in [
+        "sync_status",
+        "canonical_place_key",
+        "review_reason",
+        "backend_place_id",
+        "last_synced_at",
+        "sync_error_message",
+    ]:
+        assert field_name in models
+
+
+def test_place_sync_fields_migration_exists() -> None:
+    migration = Path("alembic/versions/20260617_0002_add_place_sync_fields.py")
+
+    assert migration.exists()
+    source = migration.read_text(encoding="utf-8")
+
+    for field_name in [
+        "sync_status",
+        "canonical_place_key",
+        "review_reason",
+        "backend_place_id",
+        "last_synced_at",
+        "sync_error_message",
+    ]:
+        assert field_name in source
+
+    assert "idx_places_sync_status" in source
