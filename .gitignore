@@ -1,4 +1,5 @@
 .env
+.DS_Store
 .venv/
 __pycache__/
 .pytest_cache/
@@ -8,3 +9,12 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+data/raw/
+data/processed/
+data/documents/
+data/external/**/*.csv
+data/external/**/*.xls
+data/external/**/*.xlsx
+data/external/**/*.zip
+data/external/**/*.json
+data/external/**/.DS_Store
