@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     app_name: str = "Tripio AI"
     app_env: str = "local"
     spring_boot_api_base_url: str = "http://localhost:8080/api"
-    database_url: str = "postgresql+psycopg://tripio:tripio@localhost:5432/tripio"
+    database_url: str = "postgresql+psycopg://tripio:tripio@localhost:5432/tripio_ai"
     kakao_rest_api_key: str = ""
     naver_client_id: str = ""
     naver_client_secret: str = ""

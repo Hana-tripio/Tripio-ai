@@ -69,7 +69,7 @@ TourAPI, 카카오 Local API, 네이버 지역 검색 API를 사용해 충청도
 먼저 `.env` 파일에 실제 키를 설정합니다. 키는 GitHub에 올리지 않습니다.
 
 ```env
-DATABASE_URL=postgresql+psycopg://tripio:tripio@localhost:5432/tripio
+DATABASE_URL=postgresql+psycopg://tripio:tripio@localhost:5432/tripio_ai
 KAKAO_REST_API_KEY=
 NAVER_CLIENT_ID=
 NAVER_CLIENT_SECRET=
@@ -119,6 +119,13 @@ alembic upgrade head
 
 AI DB는 벡터 검색을 위해 `pgvector` 확장이 필요합니다. 로컬 PostgreSQL을 Docker로 실행한다면
 `pgvector/pgvector:pg16` 이미지를 사용해야 합니다.
+
+로컬 개발에서는 백엔드와 같은 PostgreSQL 컨테이너를 사용하되 database를 분리합니다.
+
+```text
+tripio_backend: Spring Boot/Flyway 서비스 운영 데이터
+tripio_ai: FastAPI/Alembic 추천/분석 데이터
+```
 
 이미 기존 PostgreSQL 볼륨이 다른 계정이나 일반 PostgreSQL 이미지로 초기화되어 있다면
 `DATABASE_URL`의 계정이 존재하지 않거나 `CREATE EXTENSION vector` 단계에서 실패할 수 있습니다.
