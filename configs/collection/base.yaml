@@ -1,0 +1,24 @@
+output_root: data
+save_db: false
+province: 충청남도
+
+sources:
+  kakao:
+    enabled: true
+    pages: 5
+    size: 15
+    concurrency: 3
+  naver:
+    enabled: true
+    pages: 2
+    display: 5
+    concurrency: 1
+    min_interval_seconds: 0.7
+    retry_attempts: 2
+  tour_api:
+    enabled: true
+    pages: 3
+    rows: 40
+    concurrency: 2
+    festivals: false
+    stays: false

@@ -1,0 +1,15 @@
+region: 증평
+province: 충청북도
+save_db: true
+
+sources:
+  kakao:
+    pages: 7
+  tour_api:
+    pages: 5
+    festivals: true
+    stays: true
+
+festival:
+  start_date: 20260101
+  end_date: 20261231

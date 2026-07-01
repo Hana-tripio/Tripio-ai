@@ -48,10 +48,16 @@ class TourApiClient:
         self.mobile_app = mobile_app
         self.http_client = http_client or httpx.Client(timeout=10.0)
 
-    def search_keyword(self, keyword: str, *, rows: int = 20) -> list[TourApiPlace]:
+    def search_keyword(
+        self,
+        keyword: str,
+        *,
+        rows: int = 20,
+        page: int = 1,
+    ) -> list[TourApiPlace]:
         return self._get_places(
             "searchKeyword2",
-            {"keyword": keyword, "numOfRows": rows},
+            {"keyword": keyword, "numOfRows": rows, "pageNo": page},
         )
 
     def search_festivals(
@@ -59,18 +65,26 @@ class TourApiClient:
         *,
         event_start_date: str,
         event_end_date: str | None = None,
+        area_code: int | None = None,
+        sigungu_code: int | None = None,
         rows: int = 20,
+        page: int = 1,
     ) -> list[TourApiPlace]:
         params: dict[str, str | int] = {
             "eventStartDate": event_start_date,
             "numOfRows": rows,
+            "pageNo": page,
         }
         if event_end_date:
             params["eventEndDate"] = event_end_date
+        if area_code is not None:
+            params["areaCode"] = area_code
+        if sigungu_code is not None:
+            params["sigunguCode"] = sigungu_code
         return self._get_places("searchFestival2", params)
 
-    def search_stays(self, *, rows: int = 20) -> list[TourApiPlace]:
-        return self._get_places("searchStay2", {"numOfRows": rows})
+    def search_stays(self, *, rows: int = 20, page: int = 1) -> list[TourApiPlace]:
+        return self._get_places("searchStay2", {"numOfRows": rows, "pageNo": page})
 
     def _get_places(self, endpoint: str, params: dict[str, str | int]) -> list[TourApiPlace]:
         response = self.http_client.get(
@@ -80,7 +94,6 @@ class TourApiClient:
                 "MobileOS": self.mobile_os,
                 "MobileApp": self.mobile_app,
                 "_type": "json",
-                "pageNo": 1,
                 **params,
             },
         )
@@ -90,7 +103,11 @@ class TourApiClient:
         if header.get("resultCode") != "0000":
             message = header.get("resultMsg", "TourAPI request failed")
             raise ValueError(f"TourAPI request failed: {message}")
-        items = payload.get("response", {}).get("body", {}).get("items", {}).get("item", [])
+        body = payload.get("response", {}).get("body", {})
+        raw_items = body.get("items", {})
+        if isinstance(raw_items, str):
+            return []
+        items = raw_items.get("item", [])
         if isinstance(items, dict):
             items = [items]
         return [TourApiPlace.model_validate(item) for item in items]

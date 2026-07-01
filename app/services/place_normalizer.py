@@ -157,11 +157,70 @@ def _map_kakao_category(category_group_code: str, category_name: str) -> PlaceCa
         return PlaceCategory.TOURIST_ATTRACTION
     if "시장" in category_name:
         return PlaceCategory.MARKET
+    if (
+        "특산물" in category_name
+        or "관광민예품" in category_name
+        or "전통식품" in category_name
+        or "기념품판매" in category_name
+        or "식품판매" in category_name
+        or "정육점" in category_name
+        or "과일,채소가게" in category_name
+        or "수산물판매" in category_name
+    ):
+        return PlaceCategory.MARKET
+    if "공원" in category_name or "절,사찰" in category_name:
+        return PlaceCategory.TOURIST_ATTRACTION
+    if "템플스테이" in category_name:
+        return PlaceCategory.LODGING
     if "관광,명소" in category_name or "문화유적" in category_name:
         return PlaceCategory.TOURIST_ATTRACTION
+    if (
+        "문화시설" in category_name
+        or "문화원" in category_name
+        or "도서관" in category_name
+        or "문화센터" in category_name
+        or "문화의집" in category_name
+        or "청소년문화센터" in category_name
+        or "공방" in category_name
+        or "미술,공예" in category_name
+        or "목공예" in category_name
+        or "독립서점" in category_name
+        or "사진관,포토스튜디오" in category_name
+        or "셀프,대여스튜디오" in category_name
+        or "도서" in category_name
+    ):
+        return PlaceCategory.CULTURE
+    if (
+        "체험여행" in category_name
+        or "체험학습장" in category_name
+        or "체험마을" in category_name
+        or "체험농장" in category_name
+        or "주말농장" in category_name
+        or "휴양마을" in category_name
+        or "청소년수련시설" in category_name
+        or "놀이터" in category_name
+        or "실내체육관" in category_name
+        or "오락실" in category_name
+        or "골프연습장" in category_name
+        or "파3골프장" in category_name
+    ):
+        return PlaceCategory.ACTIVITY
     if "카페" in category_name:
         return PlaceCategory.CAFE
-    if "음식점" in category_name:
+    if (
+        "음식점" in category_name
+        or "중식" in category_name
+        or "일식" in category_name
+        or "양식" in category_name
+        or "분식" in category_name
+        or "치킨" in category_name
+        or "국밥" in category_name
+        or "칼국수" in category_name
+        or "냉면" in category_name
+        or "한정식" in category_name
+        or "고기" in category_name
+        or "포장마차" in category_name
+    ):
         return PlaceCategory.RESTAURANT
     if "숙박" in category_name:
         return PlaceCategory.LODGING
@@ -171,14 +230,70 @@ def _map_kakao_category(category_group_code: str, category_name: str) -> PlaceCa
 def _map_naver_category(category_name: str) -> PlaceCategory:
     if "카페" in category_name:
         return PlaceCategory.CAFE
-    if "음식점" in category_name or "한식" in category_name or "맛집" in category_name:
+    if (
+        "음식점" in category_name
+        or "한식" in category_name
+        or "맛집" in category_name
+        or "중식" in category_name
+        or "중식당" in category_name
+        or "일식" in category_name
+        or "양식" in category_name
+        or "분식" in category_name
+        or "치킨" in category_name
+    ):
         return PlaceCategory.RESTAURANT
     if "숙박" in category_name or "호텔" in category_name or "펜션" in category_name:
         return PlaceCategory.LODGING
     if "시장" in category_name:
         return PlaceCategory.MARKET
+    if (
+        "특산물" in category_name
+        or "관광민예품" in category_name
+        or "전통식품" in category_name
+        or "기념품판매" in category_name
+        or "식품판매" in category_name
+        or "정육점" in category_name
+        or "과일,채소가게" in category_name
+        or "수산물판매" in category_name
+        or "유기농산물" in category_name
+    ):
+        return PlaceCategory.MARKET
+    if (
+        "문화시설" in category_name
+        or "문화원" in category_name
+        or "도서관" in category_name
+        or "문화센터" in category_name
+        or "문화의집" in category_name
+        or "청소년문화센터" in category_name
+        or "공방" in category_name
+        or "미술,공예" in category_name
+        or "목공예" in category_name
+        or "독립서점" in category_name
+        or "사진관,포토스튜디오" in category_name
+        or "셀프,대여스튜디오" in category_name
+        or "도서" in category_name
+    ):
+        return PlaceCategory.CULTURE
+    if "템플스테이" in category_name:
+        return PlaceCategory.LODGING
+    if "공원" in category_name or "절,사찰" in category_name:
+        return PlaceCategory.TOURIST_ATTRACTION
     if "문화" in category_name or "유적" in category_name or "명소" in category_name:
         return PlaceCategory.TOURIST_ATTRACTION
+    if (
+        "관람,체험" in category_name
+        or "체험" in category_name
+        or "체험마을" in category_name
+        or "주말농장" in category_name
+        or "휴양마을" in category_name
+        or "실내체육관" in category_name
+        or "오락실" in category_name
+        or "골프연습장" in category_name
+        or "파3골프장" in category_name
+    ):
+        return PlaceCategory.ACTIVITY
+    if "포장마차" in category_name:
+        return PlaceCategory.RESTAURANT
     return PlaceCategory.ETC
 
 

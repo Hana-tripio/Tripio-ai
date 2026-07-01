@@ -39,13 +39,18 @@ class KakaoLocalClient:
         self.base_url = base_url.rstrip("/")
         self.http_client = http_client or httpx.Client(timeout=10.0)
 
-    def search_keyword(self, query: str, *, size: int = 15) -> list[KakaoKeywordPlace]:
+    def search_keyword(
+        self,
+        query: str,
+        *,
+        size: int = 15,
+        page: int = 1,
+    ) -> list[KakaoKeywordPlace]:
         response = self.http_client.get(
             f"{self.base_url}/v2/local/search/keyword.json",
-            params={"query": query, "size": size},
+            params={"query": query, "size": size, "page": page},
             headers={"Authorization": f"KakaoAK {self.api_key}"},
         )
         response.raise_for_status()
         payload: dict[str, Any] = response.json()
         return [KakaoKeywordPlace.model_validate(item) for item in payload.get("documents", [])]
-

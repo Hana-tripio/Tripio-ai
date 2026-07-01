@@ -1,0 +1,15 @@
+region: 세종
+province: 세종특별자치시
+save_db: true
+
+sources:
+  kakao:
+    pages: 7
+  tour_api:
+    pages: 5
+    festivals: true
+    stays: true
+
+festival:
+  start_date: 20260101
+  end_date: 20261231
