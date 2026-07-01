@@ -4,6 +4,7 @@ from typing import Any
 
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
+    BigInteger,
     Date,
     DateTime,
     Float,
@@ -18,6 +19,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
 from app.db.base import Base
+from app.schemas.place_source import PlaceSyncStatus
 
 
 class TimestampMixin:
@@ -55,6 +57,7 @@ class Place(Base, TimestampMixin):
     __table_args__ = (
         Index("idx_places_region_category", "region_id", "category"),
         Index("idx_places_name", "name"),
+        Index("idx_places_sync_status", "sync_status"),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -70,6 +73,16 @@ class Place(Base, TimestampMixin):
     image_url: Mapped[str] = mapped_column(String(1000), nullable=False, default="")
     description: Mapped[str] = mapped_column(Text, nullable=False, default="")
     tags: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
+    sync_status: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+        default=PlaceSyncStatus.RAW.value,
+    )
+    canonical_place_key: Mapped[str] = mapped_column(String(255), nullable=False, default="")
+    review_reason: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    backend_place_id: Mapped[int | None] = mapped_column(BigInteger)
+    last_synced_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    sync_error_message: Mapped[str] = mapped_column(Text, nullable=False, default="")
 
     region: Mapped[Region] = relationship(back_populates="places")
     sources: Mapped[list["PlaceSource"]] = relationship(back_populates="place")

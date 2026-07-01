@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class ExternalPlaceSource(StrEnum):
@@ -19,6 +19,17 @@ class PlaceCategory(StrEnum):
     CULTURE = "CULTURE"
     ACTIVITY = "ACTIVITY"
     ETC = "ETC"
+
+
+class PlaceSyncStatus(StrEnum):
+    RAW = "RAW"
+    NORMALIZED = "NORMALIZED"
+    DUPLICATE_CANDIDATE = "DUPLICATE_CANDIDATE"
+    REVIEW_REQUIRED = "REVIEW_REQUIRED"
+    READY = "READY"
+    SYNCED = "SYNCED"
+    SYNC_FAILED = "SYNC_FAILED"
+    INACTIVE = "INACTIVE"
 
 
 class NormalizedPlace(BaseModel):
@@ -50,7 +61,31 @@ class NormalizedPlace(BaseModel):
         return self
 
 
+class PlaceQualitySummary(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    input_count: int
+    kept_count: int
+    filtered_count: int
+    reclassified_count: int
+
+    @classmethod
+    def empty(cls) -> "PlaceQualitySummary":
+        return cls(
+            input_count=0,
+            kept_count=0,
+            filtered_count=0,
+            reclassified_count=0,
+        )
+
+    @classmethod
+    def from_source(cls, value: object) -> "PlaceQualitySummary":
+        return cls.model_validate(value)
+
+
 class PlaceCollectionResult(BaseModel):
     region_name: str
     queries: list[str]
     processed_places: list[NormalizedPlace]
+    quality_summary: PlaceQualitySummary = Field(default_factory=PlaceQualitySummary.empty)
+    warnings: list[str] = Field(default_factory=list)
